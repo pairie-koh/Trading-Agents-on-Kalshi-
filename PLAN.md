@@ -12,7 +12,7 @@ The original agent pulls political contracts from Kalshi, searches for relevant 
 4. **Lacking context + hallucination** — models fabricate "historical data" when they lack real evidence
 5. **Cost** — running frontier models on hundreds of contracts is expensive
 
-This plan describes 9 improvements: 7 fixes for the problems above, plus 2 new features. Each was selected for high impact relative to implementation effort. Everything over-engineered or speculative was cut.
+This plan describes 8 improvements: 7 fixes for the problems above, plus 1 new feature. Each was selected for high impact relative to implementation effort. Everything over-engineered or speculative was cut.
 
 ---
 
@@ -242,59 +242,11 @@ def verify_contract(kalshi_client, contract_id: str, expected_period: str = None
 
 ---
 
-## Improvement 5: Market Inconsistency Scanner
-
-**New feature** — not fixing a blog problem, adding a new source of edge.
-
-**Priority**: 5th — independent of the AI pipeline. Pure math. Can run from day one alongside everything else. Risk-free edge.
-
-Scan Kalshi's own market prices for arithmetic inconsistencies across related contracts. Zero AI needed.
-
-### Implementation
-
-```python
-def scan_market_inconsistencies(kalshi_client, min_gap: float = 0.05) -> list[dict]:
-    """
-    Find events where market prices for mutually exclusive outcomes
-    don't sum to ~100%, indicating arbitrage opportunity.
-    """
-    opportunities = []
-    for event in kalshi_client.get_events():
-        contracts = kalshi_client.get_contracts(event_id=event.id)
-        if not contracts or len(contracts) < 2:
-            continue
-
-        yes_prices = {c.id: c.yes_price for c in contracts}
-        total = sum(yes_prices.values())
-
-        # Prices sum to >100%: buy NO on everything (guaranteed profit minus fees)
-        # Prices sum to <100%: buy YES on everything (guaranteed profit minus fees)
-        if abs(total - 1.0) > min_gap:
-            opportunities.append({
-                "event": event.title,
-                "contracts": yes_prices,
-                "total": total,
-                "type": "overpriced" if total > 1.0 else "underpriced",
-                "gap": abs(total - 1.0)
-            })
-
-    return sorted(opportunities, key=lambda x: x["gap"], reverse=True)
-```
-
-### Why this matters
-- Every other improvement depends on the model being smarter than the market. This doesn't.
-- Arbitrage is risk-free by definition (excluding fees and execution risk)
-- In thin markets like Kalshi's political contracts, these gaps can persist for hours
-- The main constraint is fees — Kalshi charges per contract, so the gap must exceed fees to be profitable
-- Run this scan daily before the AI analysis pipeline. Free money first, opinions second.
-
----
-
-## Improvement 6: Mutually Exclusive Contract Consistency
+## Improvement 5: Mutually Exclusive Contract Consistency
 
 **Problem solved**: #2 (probability inconsistency — the "40% + 70% in a two-candidate race" problem)
 
-**Priority**: 6th — needs the pipeline running to have multiple estimates per event. Simple once it's there.
+**Priority**: 5th — needs the pipeline running to have multiple estimates per event. Simple once it's there.
 
 Shrinkage fixes overconfidence but doesn't enforce logical constraints across related contracts. If the model estimates 40% for Candidate A and 70% for Candidate B in a two-candidate race, those numbers are incoherent regardless of shrinkage.
 
@@ -323,11 +275,11 @@ Only applies to contracts Kalshi explicitly groups together. We don't try to aut
 
 ---
 
-## Improvement 7: Web Search for Top Contracts
+## Improvement 6: Web Search for Top Contracts
 
 **Problems solved**: #3 (missing nuance), #4 (hallucination / lacking context)
 
-**Priority**: 7th — the biggest quality improvement but requires integration work. Build after the core pipeline is stable.
+**Priority**: 6th — the biggest quality improvement but requires integration work. Build after the core pipeline is stable.
 
 The root cause of most analysis errors in the original agent was the model lacking current, relevant information and filling the gap with confident fabrication. The fix is giving top-tier contracts access to web search.
 
@@ -344,11 +296,11 @@ Web search adds cost per contract. Reserve for Tier 2+ only (~50 contracts per r
 
 ---
 
-## Improvement 8: Trigger-Based Re-Analysis
+## Improvement 7: Trigger-Based Re-Analysis
 
 **Problem solved**: #5 (cost management)
 
-**Priority**: 8th — cost optimization for sustained daily operation. Depends on prediction logging (Improvement 3) to know what was last analyzed.
+**Priority**: 7th — cost optimization for sustained daily operation. Depends on prediction logging (Improvement 3) to know what was last analyzed.
 
 Instead of re-analyzing every contract on a fixed daily schedule, only re-analyze when something has changed.
 
@@ -370,17 +322,17 @@ This is cheaper than a full re-analysis and produces more focused updates.
 
 ---
 
-## Improvement 9: Resolution Countdown
+## Improvement 8: Resolution Countdown
 
 **New feature** — increases monitoring intensity as contracts approach resolution.
 
-**Priority**: 9th — extends trigger-based re-analysis (Improvement 8). Only matters once the system is operational with active recommendations.
+**Priority**: 8th — extends trigger-based re-analysis (Improvement 7). Only matters once the system is operational with active recommendations.
 
 Near-resolution contracts are where the sharpest edges exist. A contract resolving Friday that the agent last checked Monday is a missed opportunity. The final 48-72 hours before resolution are when information asymmetry is highest and the market is most likely to be stale.
 
 ### Implementation
 
-Extend the trigger-based re-analysis (Improvement 8) with a time-to-resolution multiplier:
+Extend the trigger-based re-analysis (Improvement 7) with a time-to-resolution multiplier:
 
 ```python
 def get_reanalysis_priority(contract, last_analysis_date) -> float:
@@ -426,7 +378,8 @@ def get_reanalysis_priority(contract, last_analysis_date) -> float:
 | Calibration dashboard | No data yet. Defer until 100+ resolved predictions accumulate. |
 | LLM-based temporal validation layer | A regex catches obvious cases. A full LLM post-processor is overkill. |
 | Causal event graphs | High engineering effort, unclear payoff over the temporal context prompt. |
-| 5 specialized data pipelines | Web search (Improvement 8) gets 90% of the benefit at 10% of the effort. |
+| 5 specialized data pipelines | Web search (Improvement 6) gets 90% of the benefit at 10% of the effort. |
+| Market inconsistency scanner | Doesn't improve the agent's analysis. Arbitrage scanning is a separate concern. |
 | Decision tree reasoning templates | Requires domain expertise to build per contract type, constant maintenance. |
 | Hierarchical reasoning model | The combination of shrinkage + market anchoring + web search already addresses shallow reasoning. HRM adds prompt bloat and checkbox-ticking risk for marginal gain. |
 | Council restructuring | The original debate mechanism demonstrably helped (Sleigh Ride). Keep as-is, evaluate empirically. |
@@ -448,17 +401,16 @@ def get_reanalysis_priority(contract, last_analysis_date) -> float:
 | **2** | Prompt overhaul (temporal, anchoring, humility, resolution, longshot) | Text changes | Temporal confusion, overconfidence, hallucination, shallow reasoning | None |
 | **3** | Prediction logging (SQLite) | ~50 LOC | Enables measurement of everything | None |
 | **4** | Contract ID verification | ~10 LOC | Wrong-contract mistakes | None |
-| **5** | Market inconsistency scanner | ~40 LOC | (New) Risk-free arbitrage | None |
-| **6** | Consistency enforcement | ~20 LOC | Probability incoherence across related contracts | Pipeline running |
-| **7** | Web search for top contracts | Medium | Context gap, hallucination | Integration work |
-| **8** | Trigger-based re-analysis | Medium | Cost optimization for daily operation | Prediction logging (3) |
-| **9** | Resolution countdown | ~30 LOC | (New) Near-resolution edge capture | Trigger re-analysis (8) |
+| **5** | Consistency enforcement | ~20 LOC | Probability incoherence across related contracts | Pipeline running |
+| **6** | Web search for top contracts | Medium | Context gap, hallucination | Integration work |
+| **7** | Trigger-based re-analysis | Medium | Cost optimization for daily operation | Prediction logging (3) |
+| **8** | Resolution countdown | ~30 LOC | (New) Near-resolution edge capture | Trigger re-analysis (7) |
 
-**Session 1** (items 1–5): Core fixes + arbitrage scanner. No dependencies between these — all can be built independently.
+**Session 1** (items 1–4): Core fixes. No dependencies between these — all can be built independently.
 
-**Session 2** (items 6–7): Consistency enforcement + web search. Requires the core pipeline from Session 1 to be running.
+**Session 2** (items 5–6): Consistency enforcement + web search. Requires the core pipeline from Session 1 to be running.
 
-**Session 3** (items 8–9): Operational optimizations. Only matter once the system is running daily with active recommendations.
+**Session 3** (items 7–8): Operational optimizations. Only matter once the system is running daily with active recommendations.
 
 ---
 
@@ -466,51 +418,47 @@ def get_reanalysis_priority(contract, last_analysis_date) -> float:
 
 ```
 Kalshi API ──→ Contract Fetcher ──→ All ~675 contracts
-                    │                       │
-                    │                       ▼
-                    │                Tier 0: Haiku
-                    │                (quick triage, rank all)
-                    │                       │
-                    │                 Top 50 by edge
-                    │                       │
-                    │                       ▼
-                    │                Tier 2: Sonnet
-                    │                (+ web search for context)
-                    │                      │
-                    │                Top 15 by edge
-                    │                      │
-                    │                      ▼
-                    │                Tier 3: Opus
-                    │                (deep analysis)
-                    │                      │
-                    │                Top 5 candidates
-                    │                      │
-                    │                      ▼
-                    │           ┌── Council (optional) ────────┐
-                    │           │   Multi-model debate          │
-                    │           │   (user-initiated)            │
-                    │           └──────────┬──────────────────┘
-                    │                      │
-                    │                      ▼
-                    │           ┌── Validation ────────────────┐
-                    │           │   Overconfidence shrinkage    │
-                    │           │   Fee-adjusted edge calc      │
-                    │           │   Consistency enforcement     │
-                    │           │   Contract ID verification    │
-                    │           │   Temporal regex check        │
-                    │           │   Edge cap (25pp max)         │
-                    │           └──────────┬──────────────────┘
-                    │                      │
-                    ▼                      ▼
-        ┌── Market Scanner ──┐  ┌── Output ────────────────────┐
-        │   Arbitrage detect  │  │   Dashboard recommendations   │
-        │   (pure math,       │  │   Prediction log (SQLite)     │
-        │    no AI needed)    │  │   Resolution countdown alerts │
-        └─────────┬──────────┘  └──────────────────────────────┘
-                  │
-                  ▼
-          Arbitrage opportunities
-          (surfaced separately)
+                                          │
+                                          ▼
+                                   Tier 0: Haiku
+                                   (quick triage, rank all)
+                                          │
+                                    Top 50 by edge
+                                          │
+                                          ▼
+                                   Tier 2: Sonnet
+                                   (+ web search for context)
+                                          │
+                                    Top 15 by edge
+                                          │
+                                          ▼
+                                   Tier 3: Opus
+                                   (deep analysis)
+                                          │
+                                    Top 5 candidates
+                                          │
+                                          ▼
+                              ┌── Council (optional) ────────┐
+                              │   Multi-model debate          │
+                              │   (user-initiated)            │
+                              └──────────┬──────────────────┘
+                                         │
+                                         ▼
+                              ┌── Validation ────────────────┐
+                              │   Overconfidence shrinkage    │
+                              │   Fee-adjusted edge calc      │
+                              │   Consistency enforcement     │
+                              │   Contract ID verification    │
+                              │   Temporal regex check        │
+                              │   Edge cap (25pp max)         │
+                              └──────────┬──────────────────┘
+                                         │
+                                         ▼
+                              ┌── Output ────────────────────┐
+                              │   Dashboard recommendations   │
+                              │   Prediction log (SQLite)     │
+                              │   Resolution countdown alerts │
+                              └──────────────────────────────┘
 ```
 
 ---
@@ -521,13 +469,12 @@ Kalshi API ──→ Contract Fetcher ──→ All ~675 contracts
 |---|---|---|
 | #1 Temporal confusion | Prompt 2A + Contract ID verification (4) + regex check | Full |
 | #2 Overconfidence | Shrinkage (1) + fee adjustment (1) + market anchoring (2B) + longshot bias (2E) | Full |
-| #2b Probability incoherence | Consistency enforcement (6) | Full |
-| #3 Missing political nuance | Web search (7) + shrinkage (1) + anchoring (2B) | Adequate |
-| #4 Hallucination / no context | Web search (7) + epistemic humility (2C) | Full |
-| #5 Cost | Trigger re-analysis (8) + resolution countdown (9) | Adequate |
+| #2b Probability incoherence | Consistency enforcement (5) | Full |
+| #3 Missing political nuance | Web search (6) + shrinkage (1) + anchoring (2B) | Adequate |
+| #4 Hallucination / no context | Web search (6) + epistemic humility (2C) | Full |
+| #5 Cost | Trigger re-analysis (7) + resolution countdown (8) | Adequate |
 | (New) Unprofitable recommendations | Fee-adjusted edge (1) | New fix |
-| (New) Risk-free edge | Market inconsistency scanner (5) | New capability |
-| (New) Near-resolution edge | Resolution countdown (9) | New capability |
+| (New) Near-resolution edge | Resolution countdown (8) | New capability |
 
 ---
 
@@ -539,6 +486,5 @@ After 3+ months of operation with 100+ resolved predictions:
 - **Edge detection**: When the agent claims >10pp fee-adjusted edge, it should be right more often than wrong
 - **Consistency**: Zero instances of mutually exclusive contract estimates summing to >110% or <90%
 - **Error reduction**: Zero wrong-contract recommendations (Improvement 4). Temporal confusion errors reduced by >80% vs baseline (Improvement 2A).
-- **Arbitrage**: Market inconsistency scanner identifies at least one actionable opportunity per week (>5pp gap after fees)
 - **Profitability**: No recommendations where fee-adjusted edge is negative (Improvement 1)
 - **Cost**: Daily operating cost under $50 for full pipeline run
