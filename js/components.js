@@ -222,16 +222,39 @@ function renderContracts(contractsData) {
       if (c.contract_type === 'binary' && c.current_prices) {
         const yesPrice = c.current_prices.yes || c.current_prices.Yes || 0;
         priceStr = `<span style="color:var(--accent-green)">${(yesPrice * 100).toFixed(0)}%</span> Yes`;
-      } else if (c.outcomes) {
-        // Multi-outcome: show top outcome
-        const sorted = [...c.outcomes].sort((a, b) => (b.price || 0) - (a.price || 0));
-        if (sorted[0]) {
-          priceStr = `${sorted[0].name}: ${((sorted[0].price || 0) * 100).toFixed(0)}%`;
+      } else if (c.outcomes && c.outcomes.length > 0) {
+        // Multi-outcome: show top 2 outcomes by yes_price
+        const sorted = [...c.outcomes].sort((a, b) => (b.yes_price || 0) - (a.yes_price || 0));
+        const top = sorted.slice(0, 2);
+        priceStr = top.map(o => {
+          // Extract a short label from the outcome question
+          let label = o.question || '';
+          // Try to extract just the distinguishing part (e.g., date, name, amount)
+          // Remove common prefixes like "Will X" that match the parent contract name
+          const parentName = (c.contract_name || '').toLowerCase();
+          const words = parentName.split(/\s+/).filter(w => w.length > 3);
+          // If the outcome question shares most words with parent, try to extract the unique part
+          if (words.length > 2) {
+            // Find last common word position, show everything after
+            for (const suffix of ['by ', 'before ', 'in ', 'at ', 'reach ', 'increase by ']) {
+              const idx = label.toLowerCase().lastIndexOf(suffix);
+              if (idx > 0) {
+                label = label.substring(idx).replace(/\?$/, '');
+                break;
+              }
+            }
+          }
+          if (label.length > 45) label = label.substring(0, 42) + '...';
+          const pct = ((o.yes_price || 0) * 100).toFixed(0);
+          return `<span style="color:var(--accent-green)">${pct}%</span> ${label}`;
+        }).join('<br>');
+        if (sorted.length > 2) {
+          priceStr += `<br><span style="color:var(--text-secondary);font-size:0.7rem">+${sorted.length - 2} more</span>`;
         }
       }
 
       html += `<div class="contract-row">
-        <span class="contract-name">${c.contract_name}</span>
+        <span class="contract-name">${c.contract_name}${c.contract_type === 'multi-outcome' ? ' <span style="font-size:0.65rem;color:var(--text-muted)">[' + c.num_outcomes + ' outcomes]</span>' : ''}</span>
         <span class="contract-freq">${(c.prediction_frequency || '').replace(/_/g, ' ')}</span>
         <span class="contract-price">${priceStr}</span>
         <span class="contract-volume">$${fmtVolume(c.volume || 0)}</span>
