@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oracle Lab Dashboard</title>
-  <meta name="description" content="AI Geopolitical Forecasting Dashboard - Agent Performance Tracker">
+  <meta name="description" content="AI Geopolitical Forecasting Dashboard - LLM Prediction Market Agent">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
 </head>
@@ -12,7 +12,7 @@
   <header id="dashboard-header">
     <div class="header-left">
       <h1>Oracle Lab</h1>
-      <p class="subtitle">AI Geopolitical Forecasting Dashboard</p>
+      <p class="subtitle">AI Prediction Market Forecasting</p>
     </div>
     <div class="header-meta">
       <span class="meta-item" id="last-updated"></span>
@@ -23,53 +23,100 @@
 
   <!-- Tab Navigation -->
   <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="llm">LLM Forecaster</button>
-    <button class="tab-btn" data-tab="deterministic">Deterministic Agents</button>
+    <button class="tab-btn active" data-tab="about">About</button>
+    <button class="tab-btn" data-tab="llm">LLM Forecaster</button>
     <button class="tab-btn" data-tab="contracts">Contracts &amp; Intel</button>
   </nav>
 
-  <!-- ==================== TAB 1: Deterministic Agents ==================== -->
-  <main id="tab-deterministic" class="tab-content">
+  <!-- ==================== TAB 1: About ==================== -->
+  <main id="tab-about" class="tab-content active">
     <div class="dashboard-grid">
-      <!-- Leaderboard -->
-      <section id="leaderboard" class="dashboard-section">
-        <h2>Leaderboard</h2>
-        <div class="section-content"></div>
-      </section>
+      <section class="dashboard-section full-width">
+        <div class="about-hero">
+          <h2>What is Oracle Lab?</h2>
+          <p>
+            Oracle Lab is an AI-powered forecasting system that predicts outcomes on
+            <a href="https://polymarket.com" target="_blank">Polymarket</a> prediction markets.
+            It uses large language models (Claude Haiku, Sonnet, and Opus) to analyze 23 active contracts
+            spanning geopolitics, economics, politics, tech, sports, and entertainment.
+          </p>
+          <p>
+            The system runs autonomously on a cloud server, executing forecast cycles every few hours.
+            Each cycle pulls live market prices, gathers recent news and intelligence, then uses a
+            tiered LLM pipeline to generate probability estimates for each contract. Haiku handles
+            initial triage, Sonnet performs deep analysis on the most interesting contracts, and Opus
+            tackles the highest-complexity questions.
+          </p>
+          <p>
+            The core question we're investigating: <strong>can LLMs systematically outperform prediction
+            market prices?</strong> Markets aggregate the wisdom of thousands of traders with real money at stake.
+            Beating them consistently would demonstrate genuine analytical capability beyond pattern matching.
+          </p>
 
-      <!-- Per-Market Breakdown -->
-      <section id="market-breakdown" class="dashboard-section">
-        <h2>Per-Market Breakdown</h2>
-        <div class="section-content"></div>
-      </section>
+          <h2>How It Works</h2>
+          <div class="about-pipeline">
+            <div class="pipeline-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <strong>Data Collection</strong>
+                <p>Pull live prices from Polymarket for all 23 contracts. Gather fresh news via Perplexity and GDELT.</p>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <strong>Triage (Haiku)</strong>
+                <p>Claude Haiku quickly assesses all contracts, flagging those where our analysis diverges most from market consensus.</p>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <strong>Deep Analysis (Sonnet/Opus)</strong>
+                <p>Higher-tier models perform detailed reasoning with adversarial second passes on the most divergent contracts.</p>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <strong>Calibration</strong>
+                <p>Raw predictions are shrunk toward market prices to correct for systematic overconfidence, a known LLM limitation.</p>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <strong>Scoring</strong>
+                <p>As contracts resolve, predictions are scored using Brier scores and compared against market prices.</p>
+              </div>
+            </div>
+          </div>
 
-      <!-- Agent Cards -->
-      <section id="agent-cards" class="dashboard-section full-width">
-        <h2>Agent Performance</h2>
-        <div class="cards-grid"></div>
-      </section>
+          <h2>Why This Matters</h2>
+          <p>
+            Prediction markets are one of the hardest benchmarks for AI reasoning. Unlike trivia or standardized tests,
+            they require synthesizing incomplete information, reasoning under uncertainty, understanding strategic
+            incentives, and calibrating confidence. Academic research has shown that LLMs exhibit
+            "systematic overconfidence across all models" and that "extended reasoning worsens rather than improves
+            calibration." This project is an empirical test of whether careful system design can overcome these limitations.
+          </p>
+          <p>
+            This project is part of ongoing research by
+            <a href="https://github.com/andybhall" target="_blank">Andy Hall</a>, building on his earlier work
+            documented in the
+            <a href="https://freesystems.substack.com/" target="_blank">Free Systems</a> blog.
+          </p>
 
-      <!-- MSE Over Time -->
-      <section id="mse-chart" class="dashboard-section full-width">
-        <h2>MSE Over Time</h2>
-        <div class="chart-container">
-          <canvas id="mse-canvas"></canvas>
+          <div class="about-contact">
+            <p>Questions or collaboration inquiries: <a href="mailto:hello.pairie@gmail.com">hello.pairie@gmail.com</a></p>
+          </div>
         </div>
-      </section>
-
-      <!-- Prediction History -->
-      <section id="prediction-history" class="dashboard-section full-width">
-        <h2>Prediction History</h2>
-        <div class="chart-container">
-          <canvas id="scatter-canvas"></canvas>
-        </div>
-        <div class="prediction-table"></div>
       </section>
     </div>
   </main>
 
   <!-- ==================== TAB 2: LLM Forecaster ==================== -->
-  <main id="tab-llm" class="tab-content active">
+  <main id="tab-llm" class="tab-content">
     <div class="dashboard-grid">
       <!-- LLM Performance Summary -->
       <section id="llm-summary" class="dashboard-section full-width">
@@ -91,7 +138,7 @@
 
       <!-- LLM Divergence Chart -->
       <section id="llm-divergence-chart" class="dashboard-section full-width">
-        <h2>Prediction vs Market (Top 15 by Divergence)</h2>
+        <h2>Prediction vs Market (Top Divergences)</h2>
         <div class="chart-container" style="height:500px">
           <canvas id="divergence-canvas"></canvas>
         </div>
@@ -149,7 +196,11 @@
   </main>
 
   <footer>
-    <p>Data from <a href="https://github.com/andybhall/oracle-lab" target="_blank">oracle-lab</a> &middot; Updated via <code>update_data.py</code></p>
+    <p>
+      Built by <a href="mailto:hello.pairie@gmail.com">Pairie Koh</a>
+      &middot; Research with <a href="https://github.com/andybhall" target="_blank">Andy Hall</a>
+      &middot; Powered by <a href="https://polymarket.com" target="_blank">Polymarket</a>
+    </p>
   </footer>
 
   <!-- CDN Libraries -->

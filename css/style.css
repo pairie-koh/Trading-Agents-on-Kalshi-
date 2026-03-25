@@ -543,6 +543,94 @@ footer code {
   th, td { padding: 0.4rem 0.5rem; }
 }
 
+/* === About Page === */
+.about-hero {
+  max-width: 800px;
+}
+
+.about-hero h2 {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.about-hero h2:first-child {
+  margin-top: 0;
+}
+
+.about-hero p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.about-hero a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.about-hero a:hover {
+  text-decoration: underline;
+}
+
+.about-hero strong {
+  color: var(--text-primary);
+}
+
+.about-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.pipeline-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-purple);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.step-content strong {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.step-content p {
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.about-contact {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: var(--radius);
+}
+
+.about-contact p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 /* === Scrollbar === */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }

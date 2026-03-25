@@ -1,23 +1,28 @@
 // DOM rendering for each dashboard section
 
 // === Header ===
-function renderHeader(leaderboard) {
-  if (!leaderboard) return;
+function renderHeaderFromLLM(llmData) {
+  if (!llmData) return;
 
-  document.getElementById('last-updated').textContent =
-    `Updated ${timeAgo(leaderboard.last_updated)}`;
-  document.getElementById('total-cycles').textContent =
-    `${leaderboard.total_cycles} forecast cycles`;
+  const ts = llmData.timestamp;
+  if (ts) {
+    document.getElementById('last-updated').textContent = `Updated ${timeAgo(ts)}`;
+  }
+
+  const count = llmData.predictions ? llmData.predictions.length : 0;
+  document.getElementById('total-cycles').textContent = `${count} contracts tracked`;
 
   // Freshness indicator
-  const hoursOld = (Date.now() - new Date(leaderboard.last_updated).getTime()) / 3600000;
-  let dotClass, label;
-  if (hoursOld < 8) { dotClass = 'fresh'; label = 'Fresh'; }
-  else if (hoursOld < 24) { dotClass = 'stale'; label = 'Stale'; }
-  else { dotClass = 'old'; label = 'Old'; }
+  if (ts) {
+    const hoursOld = (Date.now() - new Date(ts).getTime()) / 3600000;
+    let dotClass, label;
+    if (hoursOld < 8) { dotClass = 'fresh'; label = 'Fresh'; }
+    else if (hoursOld < 24) { dotClass = 'stale'; label = 'Stale'; }
+    else { dotClass = 'old'; label = 'Old'; }
 
-  document.getElementById('freshness-indicator').innerHTML =
-    `<span class="freshness"><span class="freshness-dot ${dotClass}"></span>${label}</span>`;
+    document.getElementById('freshness-indicator').innerHTML =
+      `<span class="freshness"><span class="freshness-dot ${dotClass}"></span>${label}</span>`;
+  }
 }
 
 // === Leaderboard ===

@@ -16,16 +16,9 @@ ORACLE_LAB = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ora
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 COPIES = {
-    'scoreboard/latest.json': 'leaderboard.json',
-    'agents/momentum/scorecard.json': 'momentum_scorecard.json',
-    'agents/historian/scorecard.json': 'historian_scorecard.json',
-    'agents/game_theorist/scorecard.json': 'game_theorist_scorecard.json',
-    'agents/quant/scorecard.json': 'quant_scorecard.json',
-    'scores_history.csv': 'scores_history.csv',
     'contracts/active_contracts.json': 'active_contracts.json',
     'briefings/latest.json': 'briefing.json',
     'state/current.json': 'state.json',
-    'price_history/prices.csv': 'prices.csv',
     'rolling_scores_history.csv': 'rolling_scores.csv',
 }
 

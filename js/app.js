@@ -15,14 +15,12 @@ function initTabs() {
       btn.classList.add('active');
       document.getElementById('tab-' + tabId).classList.add('active');
 
-      // Lazy-render charts when tab is shown (Chart.js needs visible canvas)
-      if (tabId === 'deterministic' && !window._detChartsRendered && window._dashboardData) {
+      // Lazy-render LLM charts when tab is first shown (Chart.js needs visible canvas)
+      if (tabId === 'llm' && !window._llmChartsRendered && window._dashboardData) {
         const d = window._dashboardData;
-        if (d.scoresHistory && d.scoresHistory.length > 0) {
-          renderMSEChart(d.scoresHistory);
-          renderScatterChart(d.scoresHistory);
-        }
-        window._detChartsRendered = true;
+        renderDivergenceChart(d.llmPredictions);
+        renderCalibrationChart(d.rollingScores);
+        window._llmChartsRendered = true;
       }
     });
   });
@@ -32,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initTabs();
 
   // Show loading state in all sections
-  document.querySelectorAll('.section-content, .cards-grid, .contracts-grid, .briefing-content, .prediction-table').forEach(el => {
+  document.querySelectorAll('.section-content, .contracts-grid, .briefing-content').forEach(el => {
     el.innerHTML = '<div class="loading">Loading...</div>';
   });
 
@@ -41,31 +39,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     window._dashboardData = data;
 
     // === Header ===
-    renderHeader(data.leaderboard);
+    renderHeaderFromLLM(data.llmPredictions);
 
-    // === Tab 1: Deterministic Agents ===
-    renderLeaderboard(data.leaderboard);
-    renderAgentCards(data.scorecards);
-    renderMarketBreakdown(data.leaderboard);
-
-    if (data.scoresHistory && data.scoresHistory.length > 0) {
-      renderPredictionTable(data.scoresHistory);
-      // MSE and scatter charts are lazy-rendered when Deterministic tab is clicked
-    }
-
-    // === Tab 2: LLM Forecaster (default tab) ===
+    // === LLM Forecaster ===
     renderPerformanceSummary(data.performanceSummary);
     renderLLMOverview(data.llmPredictions, data.rollingScores);
     renderLLMPredictions(data.llmPredictions);
-    renderDivergenceChart(data.llmPredictions);
     renderLLMvsMarket(data.rollingScores, data.contracts);
     renderCategoryPerformance(data.rollingScores, data.llmPredictions, data.contracts);
-    renderCalibrationChart(data.rollingScores);
     renderPnLSimulator(data.rollingScores);
     renderRollingScores(data.rollingScores);
-    window._llmChartsRendered = true;
+    // Charts are lazy-rendered when LLM tab is clicked (canvas must be visible)
 
-    // === Tab 3: Contracts & Intel ===
+    // === Contracts & Intel ===
     renderContracts(data.contracts);
     renderBriefing(data.briefing, data.state);
 

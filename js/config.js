@@ -1,17 +1,8 @@
 // Data paths (relative to index.html)
 const DATA = {
-  leaderboard: 'data/leaderboard.json',
-  scorecards: {
-    momentum: 'data/momentum_scorecard.json',
-    historian: 'data/historian_scorecard.json',
-    game_theorist: 'data/game_theorist_scorecard.json',
-    quant: 'data/quant_scorecard.json',
-  },
-  scoresHistory: 'data/scores_history.csv',
   contracts: 'data/active_contracts.json',
   briefing: 'data/briefing.json',
   state: 'data/state.json',
-  prices: 'data/prices.csv',
   rollingScores: 'data/rolling_scores.csv',
   llmPredictions: 'data/llm_predictions.json',
   performanceSummary: 'data/performance_summary.json',
