@@ -522,6 +522,20 @@ function renderLLMPredictions(llmData) {
       marketStr = p.market_price != null && typeof p.market_price === 'number' ? (p.market_price * 100).toFixed(0) + '%' : '—';
       predStr = p.prediction != null && typeof p.prediction === 'number' ? (p.prediction * 100).toFixed(0) + '%' : '—';
       shrunkStr = p.shrunk_prediction != null && typeof p.shrunk_prediction === 'number' ? (p.shrunk_prediction * 100).toFixed(0) + '%' : '—';
+
+      // Binary contract pick: derive from shrunk_prediction (>0.5 = Yes, <0.5 = No)
+      const sp = p.shrunk_prediction;
+      if (sp != null && typeof sp === 'number') {
+        const q = (p.question || '').toLowerCase();
+        // Use contextual labels for known contract patterns
+        let yesLabel = 'Yes', noLabel = 'No';
+        if (q.includes('up or down')) { yesLabel = 'Up'; noLabel = 'Down'; }
+        else if (q.includes('over or under') || q.includes('higher or lower')) { yesLabel = 'Over'; noLabel = 'Under'; }
+        const pick = sp > 0.5 ? yesLabel : noLabel;
+        const conf = Math.abs(sp - 0.5) * 200;  // 0-100% confidence away from 50/50
+        const pickColor = sp > 0.5 ? 'var(--accent-green)' : 'var(--accent-red)';
+        topPickStr = `<span style="font-weight:600;color:${pickColor}">${pick}</span> <span style="font-size:0.65rem;color:var(--text-muted)">${conf.toFixed(0)}%</span>`;
+      }
     }
 
     const typeLabel = isMulti ? '<span style="font-size:0.6rem;color:var(--text-muted);margin-left:4px">[multi]</span>' : '';
