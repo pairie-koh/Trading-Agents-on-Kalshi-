@@ -501,13 +501,14 @@ function renderRollingScores(rollingScores) {
         outcomeStr = `<span style="color:${actualColor};font-weight:600">${actualCall}</span>`;
       }
 
-      // Result: who was closer?
+      // Result: who got the direction right?
       if (pred != null && mkt != null && outcome != null) {
-        const llmErr = Math.pow(pred - outcome, 2);
-        const mktErr = Math.pow(mkt - outcome, 2);
-        if (llmErr < mktErr) resultStr = '<span style="color:var(--accent-green);font-weight:600">LLM closer</span>';
-        else if (mktErr < llmErr) resultStr = '<span style="color:var(--accent-red)">Market closer</span>';
-        else resultStr = '<span style="color:var(--text-secondary)">Tie</span>';
+        const llmRight = (pred > 0.5) === (outcome >= 0.5);
+        const mktRight = (mkt > 0.5) === (outcome >= 0.5);
+        if (llmRight && mktRight) resultStr = '<span style="color:var(--accent-green)">Both right</span>';
+        else if (llmRight && !mktRight) resultStr = '<span style="color:var(--accent-green);font-weight:600">LLM right</span>';
+        else if (!llmRight && mktRight) resultStr = '<span style="color:var(--accent-red)">Market right</span>';
+        else resultStr = '<span style="color:var(--accent-red)">Both wrong</span>';
       }
     }
 
