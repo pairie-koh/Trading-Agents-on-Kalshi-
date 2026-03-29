@@ -7,6 +7,8 @@ const DATA = {
   llmPredictions: 'data/llm_predictions.json',
   performanceSummary: 'data/performance_summary.json',
   iterationLog: 'data/iteration_log.json',
+  scoreboard: 'data/scoreboard.json',
+  scoresHistory: 'data/scores_history.csv',
 };
 
 // Agent display config

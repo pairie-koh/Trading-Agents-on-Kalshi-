@@ -28,6 +28,7 @@
   <nav class="tab-nav">
     <button class="tab-btn active" data-tab="about">About</button>
     <button class="tab-btn" data-tab="llm">LLM Forecaster</button>
+    <button class="tab-btn" data-tab="agents">Agents</button>
     <button class="tab-btn" data-tab="contracts">Contracts &amp; Intel</button>
   </nav>
 
@@ -93,7 +94,28 @@
                 <p>As contracts resolve, predictions are scored using Brier scores and compared against market prices.</p>
               </div>
             </div>
+            <div class="pipeline-step">
+              <div class="step-number">6</div>
+              <div class="step-content">
+                <strong>Self-Improvement</strong>
+                <p>A separate LLM (Sonnet) reviews scored results, identifies weaknesses in prompts and parameters, and rewrites the forecasting code to improve future accuracy.</p>
+              </div>
+            </div>
           </div>
+
+          <h2>Self-Improving AI</h2>
+          <p>
+            Beyond forecasting, Oracle Lab is a <em>self-improving</em> system. Once per day, a separate
+            iteration loop reviews the system's own performance data — Brier scores, calibration gaps,
+            category-level weaknesses — and uses Claude Sonnet to rewrite the forecasting code itself.
+            This means the prompts, shrinkage parameters, triage thresholds, and reasoning instructions
+            evolve autonomously over time based on empirical results. Each change is logged and tracked
+            in the <em>LLM Forecaster</em> tab under Self-Improvement Log.
+          </p>
+          <p>
+            The system is not just making predictions — it is learning from its mistakes and rewriting
+            its own methodology to do better next time, without human intervention.
+          </p>
 
           <h2>Why This Matters</h2>
           <p>
@@ -182,7 +204,52 @@
     </div>
   </main>
 
-  <!-- ==================== TAB 3: Contracts & Intel ==================== -->
+  <!-- ==================== TAB 3: Agents ==================== -->
+  <main id="tab-agents" class="tab-content">
+    <div class="dashboard-grid">
+      <!-- Leaderboard -->
+      <section id="leaderboard" class="dashboard-section full-width">
+        <h2>Agent Leaderboard</h2>
+        <div class="section-content"></div>
+      </section>
+
+      <!-- Agent Cards -->
+      <section id="agent-cards" class="dashboard-section full-width">
+        <h2>Agent Scorecards</h2>
+        <div class="cards-grid"></div>
+      </section>
+
+      <!-- MSE Chart -->
+      <section id="mse-chart" class="dashboard-section full-width">
+        <h2>MSE Over Time</h2>
+        <div class="chart-container" style="height:400px">
+          <canvas id="mse-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Scatter Chart -->
+      <section id="scatter-chart" class="dashboard-section full-width">
+        <h2>Predicted vs Actual</h2>
+        <div class="chart-container" style="height:400px">
+          <canvas id="scatter-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Per-Market Breakdown -->
+      <section id="market-breakdown" class="dashboard-section full-width">
+        <h2>Per-Market Breakdown</h2>
+        <div class="section-content"></div>
+      </section>
+
+      <!-- Prediction History -->
+      <section id="prediction-history" class="dashboard-section full-width">
+        <h2>Recent Agent Predictions</h2>
+        <div class="prediction-table"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ==================== TAB 4: Contracts & Intel ==================== -->
   <main id="tab-contracts" class="tab-content">
     <div class="dashboard-grid">
       <!-- Contract Overview -->

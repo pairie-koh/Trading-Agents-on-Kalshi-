@@ -30,6 +30,8 @@ async function loadAllData() {
     fetchCSV(DATA.rollingScores),                    // 4
     fetchJSON(DATA.performanceSummary),              // 5
     fetchJSON(DATA.iterationLog),                     // 6
+    fetchJSON(DATA.scoreboard),                        // 7
+    fetchCSV(DATA.scoresHistory),                      // 8
   ]);
 
   const get = (i) => results[i].status === 'fulfilled' ? results[i].value : null;
@@ -42,5 +44,7 @@ async function loadAllData() {
     rollingScores: get(4),
     performanceSummary: get(5),
     iterationLog: get(6),
+    scoreboard: get(7),
+    scoresHistory: get(8),
   };
 }

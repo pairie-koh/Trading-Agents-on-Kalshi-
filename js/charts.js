@@ -1,10 +1,37 @@
 // Chart.js configuration and chart rendering
 
-// Set dark theme defaults
-Chart.defaults.color = '#8b949e';
-Chart.defaults.borderColor = '#30363d';
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif";
+// Set light theme defaults
+Chart.defaults.color = '#6c757d';
+Chart.defaults.borderColor = '#e9ecef';
+Chart.defaults.font.family = "'Instrument Serif', Georgia, 'Times New Roman', serif";
 Chart.defaults.font.size = 12;
+
+// Helper: group scores_history rows by agent
+function groupByAgent(scoresHistory) {
+  const grouped = {};
+  for (const row of scoresHistory) {
+    if (!row.agent) continue;
+    if (!grouped[row.agent]) grouped[row.agent] = [];
+    grouped[row.agent].push(row);
+  }
+  // Sort each agent's rows by timestamp
+  for (const rows of Object.values(grouped)) {
+    rows.sort((a, b) => a.timestamp - b.timestamp);
+  }
+  return grouped;
+}
+
+// Helper: compute rolling MSE over a window
+function rollingMSE(rows, windowSize) {
+  const result = [];
+  for (let i = 0; i < rows.length; i++) {
+    const start = Math.max(0, i - windowSize + 1);
+    const window = rows.slice(start, i + 1);
+    const mse = window.reduce((sum, r) => sum + (r.squared_error || 0), 0) / window.length;
+    result.push({ timestamp: rows[i].timestamp, mse });
+  }
+  return result;
+}
 
 // MSE over time line chart
 function renderMSEChart(scoresHistory) {
@@ -45,11 +72,11 @@ function renderMSEChart(scoresHistory) {
         x: {
           type: 'time',
           time: { unit: 'day', tooltipFormat: 'MMM d, HH:mm' },
-          grid: { color: '#21262d' },
+          grid: { color: '#e9ecef' },
         },
         y: {
-          title: { display: true, text: 'MSE (rolling avg)', color: '#8b949e' },
-          grid: { color: '#21262d' },
+          title: { display: true, text: 'MSE (rolling avg)', color: '#6c757d' },
+          grid: { color: '#e9ecef' },
           beginAtZero: true,
         },
       },
@@ -58,8 +85,8 @@ function renderMSEChart(scoresHistory) {
           labels: { usePointStyle: true, pointStyle: 'circle', padding: 16 },
         },
         tooltip: {
-          backgroundColor: '#1c2129',
-          borderColor: '#30363d',
+          backgroundColor: '#ffffff',
+          borderColor: '#e9ecef',
           borderWidth: 1,
           callbacks: {
             label: (ctx) => `${ctx.dataset.label}: ${fmtMSE(ctx.parsed.y)}`,
@@ -103,14 +130,14 @@ function renderScatterChart(scoresHistory) {
       maintainAspectRatio: false,
       scales: {
         x: {
-          title: { display: true, text: 'Actual Price', color: '#8b949e' },
-          grid: { color: '#21262d' },
+          title: { display: true, text: 'Actual Price', color: '#6c757d' },
+          grid: { color: '#e9ecef' },
           min: minVal,
           max: maxVal,
         },
         y: {
-          title: { display: true, text: 'Predicted Price', color: '#8b949e' },
-          grid: { color: '#21262d' },
+          title: { display: true, text: 'Predicted Price', color: '#6c757d' },
+          grid: { color: '#e9ecef' },
           min: minVal,
           max: maxVal,
         },
@@ -142,8 +169,8 @@ function renderScatterChart(scoresHistory) {
           },
         },
         tooltip: {
-          backgroundColor: '#1c2129',
-          borderColor: '#30363d',
+          backgroundColor: '#ffffff',
+          borderColor: '#e9ecef',
           borderWidth: 1,
           callbacks: {
             label: (ctx) => `${ctx.dataset.label}: pred=${ctx.parsed.y.toFixed(4)}, actual=${ctx.parsed.x.toFixed(4)}`,
@@ -197,8 +224,8 @@ function renderDivergenceChart(llmData) {
       maintainAspectRatio: false,
       scales: {
         x: {
-          title: { display: true, text: 'Probability (%)', color: '#8b949e' },
-          grid: { color: '#21262d' },
+          title: { display: true, text: 'Probability (%)', color: '#6c757d' },
+          grid: { color: '#e9ecef' },
           min: 0,
           max: 100,
         },
@@ -212,8 +239,8 @@ function renderDivergenceChart(llmData) {
           labels: { usePointStyle: true, pointStyle: 'rect', padding: 16 },
         },
         tooltip: {
-          backgroundColor: '#1c2129',
-          borderColor: '#30363d',
+          backgroundColor: '#ffffff',
+          borderColor: '#e9ecef',
           borderWidth: 1,
         },
       },
@@ -295,19 +322,19 @@ function renderCalibrationChart(rollingScores) {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        x: { grid: { color: '#21262d' } },
+        x: { grid: { color: '#e9ecef' } },
         yPct: {
           type: 'linear',
           position: 'left',
-          title: { display: true, text: 'Probability (%)', color: '#8b949e' },
-          grid: { color: '#21262d' },
+          title: { display: true, text: 'Probability (%)', color: '#6c757d' },
+          grid: { color: '#e9ecef' },
           min: 0,
           max: 100,
         },
         yCount: {
           type: 'linear',
           position: 'right',
-          title: { display: true, text: 'Count', color: '#8b949e' },
+          title: { display: true, text: 'Count', color: '#6c757d' },
           grid: { display: false },
           beginAtZero: true,
         },
@@ -317,8 +344,8 @@ function renderCalibrationChart(rollingScores) {
           labels: { usePointStyle: true, pointStyle: 'circle', padding: 16 },
         },
         tooltip: {
-          backgroundColor: '#1c2129',
-          borderColor: '#30363d',
+          backgroundColor: '#ffffff',
+          borderColor: '#e9ecef',
           borderWidth: 1,
         },
         annotation: {

@@ -15,12 +15,18 @@ function initTabs() {
       btn.classList.add('active');
       document.getElementById('tab-' + tabId).classList.add('active');
 
-      // Lazy-render LLM charts when tab is first shown (Chart.js needs visible canvas)
+      // Lazy-render charts when tab is first shown (Chart.js needs visible canvas)
       if (tabId === 'llm' && !window._llmChartsRendered && window._dashboardData) {
         const d = window._dashboardData;
         renderDivergenceChart(d.llmPredictions);
         renderCalibrationChart(d.rollingScores);
         window._llmChartsRendered = true;
+      }
+      if (tabId === 'agents' && !window._agentChartsRendered && window._dashboardData) {
+        const d = window._dashboardData;
+        renderMSEChart(d.scoresHistory);
+        renderScatterChart(d.scoresHistory);
+        window._agentChartsRendered = true;
       }
     });
   });
@@ -50,6 +56,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPnLSimulator(data.rollingScores);
     renderRollingScores(data.rollingScores);
     // Charts are lazy-rendered when LLM tab is clicked (canvas must be visible)
+
+    // === Agents ===
+    if (data.scoreboard) {
+      renderLeaderboard(data.scoreboard);
+      renderMarketBreakdown(data.scoreboard);
+    }
+    if (data.scoreboard && data.scoreboard.scorecards) {
+      renderAgentCards(data.scoreboard.scorecards);
+    }
+    renderPredictionTable(data.scoresHistory);
+    // Agent charts are lazy-rendered when Agents tab is clicked
 
     // === Contracts & Intel ===
     renderContracts(data.contracts);
