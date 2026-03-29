@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-29T08:50:15Z",
+  "timestamp": "2026-03-29T13:07:21Z",
   "market_prices": {
     "regime_fall": {
-      "current": 0.185,
+      "current": 0.195,
       "previous": 0.185,
-      "change_4h": 0.0,
-      "change_24h": -0.01,
-      "change_7d": -0.08,
+      "change_4h": 0.01,
+      "change_24h": 0.0,
+      "change_7d": -0.07,
       "history_24h": [
         {
           "t": 1774747408,
@@ -23,14 +23,18 @@
         {
           "t": 1774774215,
           "p": 0.185
+        },
+        {
+          "t": 1774789641,
+          "p": 0.195
         }
       ]
     }
   },
   "fresh_facts": [
     {
-      "claim": "USS Tripoli (LHA-7) and its 31st Marine Expeditionary Unit, carrying approximately 3,500 sailors and Marines, entered US Central Command's area of operations on March 27, 2026.",
-      "source": "US military/CENTCOM reports",
+      "claim": "USS Tripoli (LHA-7) and 31st Marine Expeditionary Unit entered CENTCOM area on March 27, 2026, with approximately 3,500 sailors and Marines.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
@@ -38,26 +42,17 @@
       "confidence": "high"
     },
     {
-      "claim": "USS Boxer Amphibious Ready Group/Marine Expeditionary Unit deployed from San Diego on March 18, 2026, en route to relieve USS Tripoli in the Middle East.",
-      "source": "US military/Pentagon",
+      "claim": "Approximately 2,500 Marines deployed via USS Boxer (LHD-4) and warships between March 20-24, 2026, signaling potential ground options in the Middle East.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
-      "time": "2026-03-18T00:00:00Z",
+      "time": "2026-03-22T00:00:00Z",
       "confidence": "high"
     },
     {
-      "claim": "Pentagon finalized plans as of March 29, 2026, for potential ground operations in Iran involving 3,000-4,000 soldiers from the 82nd Airborne Division focused on regional capacity including the Strait of Hormuz and Kharg Island.",
-      "source": "Pentagon",
-      "source_category": "government_official",
-      "indicator_category": "military_pressure",
-      "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
-      "confidence": "high"
-    },
-    {
-      "claim": "The United States has approximately 50,000 troops deployed in the Middle East region prior to recent reinforcements.",
-      "source": "US military",
+      "claim": "Pentagon plans deployment of 3,000-4,000 soldiers from the 82nd Airborne Division for regional buildup in the Middle East.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
@@ -65,8 +60,8 @@
       "confidence": "high"
     },
     {
-      "claim": "Thirteen US troops have been killed and 290 wounded since February 28, 2026 strikes.",
-      "source": "US military",
+      "claim": "US military strikes have targeted 9,000 Iranian targets, with 13 US troops killed and 290 wounded since the start of the US-Iran war on February 28, 2026.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
@@ -74,17 +69,53 @@
       "confidence": "high"
     },
     {
-      "claim": "Iran continues missile and drone attacks on Israel, US positions, and energy targets following US expanded strikes on approximately 9,000 Iranian targets including missile and naval infrastructure.",
-      "source": "US military/CENTCOM",
+      "claim": "Joint US-Israeli strikes on Iran began on February 28, 2026, targeting Iranian nuclear, military, and industrial sites including locations in Tehran.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
+      "time": "2026-02-28T00:00:00Z",
       "confidence": "high"
     },
     {
-      "claim": "The United States and Iran exchanged competing ceasefire proposals on March 25, 2026, with the US offering a 15-point framework including sanctions relief, nuclear rollback, IAEA monitoring, missile limits, and Strait access.",
-      "source": "US government/diplomatic sources",
+      "claim": "Supreme Leader Ali Khamenei was killed, with power shifting to IRGC hardliners and new Supreme Leader Mojtaba Khamenei assuming leadership as of March 12, 2026.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "succession_dynamics",
+      "market": "regime_fall",
+      "time": "2026-03-12T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "Mohammad Bagher Zolghadr was appointed as Supreme National Security Council Secretary, enhancing military-security dominance over civilian institutions.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "succession_dynamics",
+      "market": "regime_fall",
+      "time": "2026-03-12T00:00:00Z",
+      "confidence": "medium"
+    },
+    {
+      "claim": "A nationwide internet blackout in Iran was implemented to tighten regime control as of March 28, 2026.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "internal_stability",
+      "market": "regime_fall",
+      "time": "2026-03-28T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "Iran presented a ceasefire proposal on March 25, 2026, demanding an end to strikes, reparations, and control of the Strait of Hormuz.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "diplomatic_signals",
+      "market": "regime_fall",
+      "time": "2026-03-25T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "The United States presented ceasefire terms on March 25, 2026, including sanctions relief, Iranian nuclear rollback, and IAEA monitoring.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "diplomatic_signals",
       "market": "regime_fall",
@@ -92,62 +123,53 @@
       "confidence": "high"
     },
     {
-      "claim": "Iran's counter-ceasefire proposal includes halting strikes on officials, war reparations demands, and retaining Hormuz control.",
-      "source": "Iranian government/diplomatic sources",
+      "claim": "President Trump declared the US-Iran war 'won' on March 24, 2026, but stated the US insists on Iranian concessions.",
+      "source": "government_official",
       "source_category": "government_official",
       "indicator_category": "diplomatic_signals",
       "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
+      "time": "2026-03-24T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "Thailand secured safe passage for its oil vessels through the Strait of Hormuz on March 28, 2026.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "economic_collapse",
+      "market": "regime_fall",
+      "time": "2026-03-28T00:00:00Z",
       "confidence": "medium"
     },
     {
-      "claim": "The Trump administration extended a pause on Iranian energy strikes by 10 days as of March 29, 2026.",
-      "source": "Trump administration",
-      "source_category": "government_official",
-      "indicator_category": "diplomatic_signals",
-      "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
-      "confidence": "high"
-    },
-    {
-      "claim": "Mohammad Bagher Zolghadr, an IRGC veteran, was appointed as Secretary of the Supreme National Security Council, signaling a shift of power to military-security structures.",
-      "source": "Iranian government",
-      "source_category": "government_official",
-      "indicator_category": "succession_dynamics",
-      "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
-      "confidence": "high"
-    },
-    {
-      "claim": "Following Supreme Leader Ali Khamenei's death, IRGC hardliners from the Iran-Iraq war era have come to dominate Iranian leadership and decision-making.",
-      "source": "News reports",
-      "source_category": "us_prestige",
-      "indicator_category": "succession_dynamics",
-      "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
-      "confidence": "medium"
-    },
-    {
-      "claim": "A nationwide internet blackout has been enforced in Iran as part of state control measures amid military strikes.",
-      "source": "News reports",
-      "source_category": "wire_service",
-      "indicator_category": "internal_stability",
-      "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
-      "confidence": "high"
-    },
-    {
-      "claim": "Thailand secured safe passage for its oil vessels through the Strait of Hormuz per AFP report on March 28, 2026.",
-      "source": "AFP",
-      "source_category": "wire_service",
+      "claim": "Oil prices remained elevated due to Strait of Hormuz disruptions and proxy threats as of late March 2026.",
+      "source": "market_commentary",
+      "source_category": "market_commentary",
       "indicator_category": "economic_collapse",
       "market": "regime_fall",
       "time": "2026-03-28T00:00:00Z",
       "confidence": "high"
     },
     {
-      "claim": "US-Israeli strikes targeting nuclear, military, and industrial Iranian targets have degraded Iranian naval and missile capabilities.",
-      "source": "US CENTCOM",
+      "claim": "Iran continues missile and drone attacks on Israel and US positions amid the ongoing war that began February 28, 2026.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "military_pressure",
+      "market": "regime_fall",
+      "time": "2026-03-29T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "A jailbreak at Mariwan detention facility occurred in early March 2026 amid ongoing strikes on detention facilities.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "internal_stability",
+      "market": "regime_fall",
+      "time": "2026-03-15T00:00:00Z",
+      "confidence": "medium"
+    },
+    {
+      "claim": "Iran's nuclear restart and missile development programs are cited as context for US military buildup as of March 2026.",
+      "source": "US Department of Defense/Pentagon",
       "source_category": "government_official",
       "indicator_category": "military_pressure",
       "market": "regime_fall",
@@ -155,36 +177,54 @@
       "confidence": "high"
     },
     {
-      "claim": "Oil prices have elevated due to disruptions in the Strait of Hormuz and proxy threats including Houthi missiles and drone strikes on Oman port.",
-      "source": "Market sources",
+      "claim": "US military operations expanded to include combat against Iranian missile and drone threats using A-10s and Apache helicopters.",
+      "source": "US Department of Defense/Pentagon",
+      "source_category": "government_official",
+      "indicator_category": "military_pressure",
+      "market": "regime_fall",
+      "time": "2026-03-29T00:00:00Z",
+      "confidence": "high"
+    },
+    {
+      "claim": "Iran retains leverage via Strait of Hormuz control despite experiencing naval degradation as of late March 2026.",
+      "source": "market_commentary",
       "source_category": "market_commentary",
       "indicator_category": "economic_collapse",
       "market": "regime_fall",
-      "time": "2026-03-29T00:00:00Z",
+      "time": "2026-03-28T00:00:00Z",
       "confidence": "medium"
     },
     {
-      "claim": "European officials warned against promoting preferred Iranian leaders to avoid reputational risks, per statement on March 28, 2026.",
-      "source": "European officials",
-      "source_category": "government_official",
-      "indicator_category": "international_response",
+      "claim": "Iran accused the United States of 'negotiating with itself' in ceasefire discussions as of late March 2026.",
+      "source": "wire_service",
+      "source_category": "wire_service",
+      "indicator_category": "diplomatic_signals",
       "market": "regime_fall",
       "time": "2026-03-28T00:00:00Z",
       "confidence": "medium"
+    },
+    {
+      "claim": "Trump threatened escalation in the US-Iran conflict if no deal is reached, as of late March 2026.",
+      "source": "government_official",
+      "source_category": "government_official",
+      "indicator_category": "diplomatic_signals",
+      "market": "regime_fall",
+      "time": "2026-03-28T00:00:00Z",
+      "confidence": "high"
     }
   ],
   "state": {
     "last_updated": "2026-03-29T00:00:00Z",
     "markets": {
       "regime_fall": {
-        "current_status": "U.S. and Israeli air campaign has struck approximately 9,000 Iranian targets with operations nearing completion, while Pentagon finalizes plans for potential ground operations involving 3,000-4,000 troops from the 82nd Airborne Division; the military-dominated regime under new Supreme Leader Mojtaba Khamenei continues rejecting ceasefire terms despite massive degradation of naval and missile capabilities and a nationwide internet blackout.",
-        "last_major_event": "Pentagon finalized plans as of March 29, 2026, for potential ground operations in Iran involving 3,000-4,000 soldiers from the 82nd Airborne Division focused on the Strait of Hormuz and Kharg Island, escalating military pressure beyond the air campaign.",
-        "last_major_event_time": "2026-03-29T00:00:00Z",
+        "current_status": "U.S. and Israeli air campaign has struck approximately 9,000 Iranian targets with operations nearing completion, while major amphibious and ground force deployments (USS Tripoli with 3,500 personnel, USS Boxer contingent, and 82nd Airborne preparations) position forces for potential ground operations; the military-dominated regime under Supreme Leader Mojtaba Khamenei continues rejecting ceasefire terms despite massive naval and missile capability degradation, nationwide internet blackout, and ongoing but depleted Iranian missile and drone counterattacks.",
+        "last_major_event": "USS Tripoli (LHA-7) and 31st Marine Expeditionary Unit entered CENTCOM area on March 27, 2026, with approximately 3,500 sailors and Marines, significantly expanding ground operation capacity alongside ongoing Pentagon planning for 82nd Airborne deployment.",
+        "last_major_event_time": "2026-03-27T00:00:00Z",
         "military_pressure": "critical",
         "internal_stability": "critical",
         "succession_dynamics": "critical",
-        "diplomatic_signals": "high",
-        "economic_collapse": "critical",
+        "diplomatic_signals": "critical",
+        "economic_collapse": "high",
         "international_response": "high"
       }
     }
