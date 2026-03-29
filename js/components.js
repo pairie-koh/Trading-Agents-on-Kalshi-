@@ -660,7 +660,8 @@ function renderLLMvsMarket(rollingScores, contractsData) {
     return;
   }
 
-  let llmWins = 0, marketWins = 0, ties = 0;
+  let llmWins = 0, llmLosses = 0;
+  let mktWins = 0;
   let count = 0;
 
   for (const r of rollingScores) {
@@ -669,32 +670,25 @@ function renderLLMvsMarket(rollingScores, contractsData) {
     let llmRight, mktRight;
 
     if (typeof r.prediction === 'number' && typeof r.market_price === 'number' && typeof r.outcome === 'number') {
-      // Binary: did you call the right side?
       llmRight = (r.prediction > 0.5) === (r.outcome >= 0.5);
       mktRight = (r.market_price > 0.5) === (r.outcome >= 0.5);
     } else {
-      // Multi-outcome: did you pick the right bucket?
       const predArr = parseArrayStr(r.prediction);
       const mktArr = parseArrayStr(r.market_price);
       const outArr = parseArrayStr(r.outcome);
       if (!predArr || !mktArr || !outArr) continue;
 
-      const llmTopIdx = findWinnerIdx(predArr);
-      const mktTopIdx = findWinnerIdx(mktArr);
-      const actualIdx = findWinnerIdx(outArr);
-
-      llmRight = llmTopIdx === actualIdx;
-      mktRight = mktTopIdx === actualIdx;
+      llmRight = findWinnerIdx(predArr) === findWinnerIdx(outArr);
+      mktRight = findWinnerIdx(mktArr) === findWinnerIdx(outArr);
     }
 
     count++;
-
-    if (llmRight && !mktRight) llmWins++;
-    else if (!llmRight && mktRight) marketWins++;
-    else ties++; // both right or both wrong
+    if (llmRight) llmWins++;
+    else llmLosses++;
+    if (mktRight) mktWins++;
   }
 
-  const llmBetter = llmWins > marketWins;
+  const llmBetter = count > 0 && llmWins > mktWins;
 
   let html = `
     <div class="llm-stats-grid" style="grid-template-columns:repeat(4,1fr)">
@@ -703,12 +697,12 @@ function renderLLMvsMarket(rollingScores, contractsData) {
         <div class="stat-label">LLM Wins</div>
       </div>
       <div class="llm-stat-card">
-        <div class="stat-value" style="color:var(--accent-red)">${marketWins}</div>
-        <div class="stat-label">Market Wins</div>
+        <div class="stat-value" style="color:var(--accent-red)">${llmLosses}</div>
+        <div class="stat-label">LLM Losses</div>
       </div>
       <div class="llm-stat-card">
-        <div class="stat-value" style="color:var(--text-secondary)">${ties}</div>
-        <div class="stat-label">Ties</div>
+        <div class="stat-value" style="color:var(--accent-blue)">${mktWins}</div>
+        <div class="stat-label">Market Correct</div>
       </div>
       <div class="llm-stat-card">
         <div class="stat-value">${count}</div>
@@ -717,12 +711,12 @@ function renderLLMvsMarket(rollingScores, contractsData) {
     </div>
     <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap">
       <div style="flex:1;min-width:180px;padding:1rem;background:var(--bg-secondary);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:0.75rem;color:var(--text-secondary)">LLM Accuracy</div>
+        <div style="font-size:0.75rem;color:var(--text-secondary)">LLM Win Rate</div>
         <div style="font-size:1.4rem;font-weight:700;color:${llmBetter ? 'var(--accent-green)' : 'var(--accent-red)'}">${count > 0 ? ((llmWins / count) * 100).toFixed(0) + '%' : '—'}</div>
       </div>
       <div style="flex:1;min-width:180px;padding:1rem;background:var(--bg-secondary);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:0.75rem;color:var(--text-secondary)">Market Accuracy</div>
-        <div style="font-size:1.4rem;font-weight:700;color:${!llmBetter ? 'var(--accent-green)' : 'var(--accent-red)'}">${count > 0 ? ((marketWins / count) * 100).toFixed(0) + '%' : '—'}</div>
+        <div style="font-size:0.75rem;color:var(--text-secondary)">Market Win Rate</div>
+        <div style="font-size:1.4rem;font-weight:700;color:${!llmBetter ? 'var(--accent-green)' : 'var(--accent-red)'}">${count > 0 ? ((mktWins / count) * 100).toFixed(0) + '%' : '—'}</div>
       </div>
       <div style="flex:1;min-width:180px;padding:1rem;background:var(--bg-secondary);border-radius:8px;border:1px solid var(--border)">
         <div style="font-size:0.75rem;color:var(--text-secondary)">Verdict</div>
