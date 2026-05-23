@@ -2317,3 +2317,11 @@ timestamp,agent,market,predicted,actual,current_price,squared_error,naive_se,dir
 1779461877.0,naive_baseline,regime_fall,0.038,0.0435,0.038,3.025e-05,3.025e-05,False,N/A,24h
 1779461878.0,quant,regime_fall,0.038,0.0435,0.038,3.025e-05,3.025e-05,False,1.36.0,24h
 1779461878.0,naive_baseline,regime_fall,0.038,0.0435,0.038,3.025e-05,3.025e-05,False,N/A,24h
+1779473184.0,momentum,regime_fall,0.0881,0.039,0.0365,0.00241081,6.25e-06,True,1.36.0,24h
+1779473184.0,naive_baseline,regime_fall,0.0365,0.039,0.0365,6.25e-06,6.25e-06,False,N/A,24h
+1779473184.0,historian,regime_fall,0.037112,0.039,0.0365,3.56e-06,6.25e-06,True,1.35.0,24h
+1779473184.0,naive_baseline,regime_fall,0.0365,0.039,0.0365,6.25e-06,6.25e-06,False,N/A,24h
+1779473184.0,game_theorist,regime_fall,0.0572,0.039,0.0365,0.00033124,6.25e-06,True,1.36.0,24h
+1779473184.0,naive_baseline,regime_fall,0.0365,0.039,0.0365,6.25e-06,6.25e-06,False,N/A,24h
+1779473184.0,quant,regime_fall,0.0365,0.039,0.0365,6.25e-06,6.25e-06,False,1.36.0,24h
+1779473184.0,naive_baseline,regime_fall,0.0365,0.039,0.0365,6.25e-06,6.25e-06,False,N/A,24h
