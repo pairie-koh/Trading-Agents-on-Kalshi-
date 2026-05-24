@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-24T17:18:07Z",
+  "timestamp": "2026-05-24T21:10:46Z",
   "predictions": [
     {
       "question": "Highest temperature in NYC",
@@ -9,7 +9,7 @@
       "tier": "haiku",
       "market_price": 0,
       "divergence": 0.0,
-      "timestamp": "2026-05-24T17:18:07Z",
+      "timestamp": "2026-05-24T21:10:46Z",
       "outcome_predictions": [
         0.0,
         0.0,
@@ -17,11 +17,11 @@
         0.0,
         0.0,
         0.0,
-        0.0955,
-        0.375,
-        0.49,
-        0.065,
-        0.022
+        0.0,
+        0.62,
+        0.34,
+        0.018,
+        0.023
       ],
       "shrunk_outcome_predictions": [
         0.0,
@@ -30,11 +30,11 @@
         0.0,
         0.0,
         0.0,
-        0.0955,
-        0.375,
-        0.49,
-        0.065,
-        0.022
+        0.0,
+        0.62,
+        0.34,
+        0.018,
+        0.023
       ],
       "outcome_questions": [
         "Will the highest temperature in New York City be 43\u00b0F or below on May 24?",
@@ -56,11 +56,11 @@
         0.0,
         0.0,
         0.0,
-        0.0955,
-        0.375,
-        0.49,
-        0.065,
-        0.022
+        0.0,
+        0.62,
+        0.34,
+        0.018,
+        0.023
       ],
       "reasoning_excerpt": "[ERROR: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions]"
     },
@@ -72,18 +72,18 @@
       "tier": "haiku",
       "market_price": 0,
       "divergence": 0.0,
-      "timestamp": "2026-05-24T17:18:07Z",
+      "timestamp": "2026-05-24T21:10:46Z",
       "outcome_predictions": [
         0.0,
         0.0,
         0.0,
         0.0,
+        0.0,
         0.0005,
-        0.24,
-        0.645,
-        0.095,
-        0.0075,
-        0.003,
+        0.978,
+        0.016,
+        0.0065,
+        0.0025,
         0.0005
       ],
       "shrunk_outcome_predictions": [
@@ -91,12 +91,12 @@
         0.0,
         0.0,
         0.0,
+        0.0,
         0.0005,
-        0.24,
-        0.645,
-        0.095,
-        0.0075,
-        0.003,
+        0.978,
+        0.016,
+        0.0065,
+        0.0025,
         0.0005
       ],
       "outcome_questions": [
@@ -117,12 +117,12 @@
         0.0,
         0.0,
         0.0,
+        0.0,
         0.0005,
-        0.24,
-        0.645,
-        0.095,
-        0.0075,
-        0.003,
+        0.978,
+        0.016,
+        0.0065,
+        0.0025,
         0.0005
       ],
       "reasoning_excerpt": "[ERROR: 402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions]"
